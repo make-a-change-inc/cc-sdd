@@ -27,9 +27,9 @@ Generate implementation tasks for feature **$1** based on approved requirements 
 ### Step 1: Load Context
 
 **Read all necessary context**:
-- `{{KIRO_DIR}}/specs/$1/spec.json`, `requirements.md`, `design.md`
-- `{{KIRO_DIR}}/specs/$1/tasks.md` (if exists, for merge mode)
-- **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
+- `.kiro/specs/$1/spec.json`, `requirements.md`, `design.md`
+- `.kiro/specs/$1/tasks.md` (if exists, for merge mode)
+- **Entire `.kiro/steering/` directory** for complete project memory
 
 **Validate approvals**:
 - If `-y` flag provided ($2 == "-y"): Auto-approve requirements and design in spec.json
@@ -38,9 +38,9 @@ Generate implementation tasks for feature **$1** based on approved requirements 
 ### Step 2: Generate Implementation Tasks
 
 **Load generation rules and template**:
-- Read `{{KIRO_DIR}}/settings/rules/tasks-generation.md` for principles
-- If sequential mode is **false**: Read `{{KIRO_DIR}}/settings/rules/tasks-parallel-analysis.md` for parallel judgement criteria
-- Read `{{KIRO_DIR}}/settings/templates/specs/tasks.md` for format (supports `(P)` markers)
+- Read `.kiro/settings/rules/tasks-generation.md` for principles
+- If sequential mode is **false**: Read `.kiro/settings/rules/tasks-parallel-analysis.md` for parallel judgement criteria
+- Read `.kiro/settings/templates/specs/tasks.md` for format (supports `(P)` markers)
 
 **Generate task list following all rules**:
 - Use language specified in spec.json
@@ -55,7 +55,7 @@ Generate implementation tasks for feature **$1** based on approved requirements 
 ### Step 3: Finalize
 
 **Write and update**:
-- Create/update `{{KIRO_DIR}}/specs/$1/tasks.md`
+- Create/update `.kiro/specs/$1/tasks.md`
 - Update spec.json metadata:
   - Set `phase: "tasks-generated"`
   - Set `approvals.tasks.generated: true, approved: false`
@@ -80,7 +80,7 @@ Generate implementation tasks for feature **$1** based on approved requirements 
 
 Provide brief summary in the language specified in spec.json:
 
-1. **Status**: Confirm tasks generated at `{{KIRO_DIR}}/specs/$1/tasks.md`
+1. **Status**: Confirm tasks generated at `.kiro/specs/$1/tasks.md`
 2. **Task Summary**: 
    - Total: X major tasks, Y sub-tasks
    - All Z requirements covered
@@ -104,7 +104,7 @@ Provide brief summary in the language specified in spec.json:
 
 **Missing Requirements or Design**:
 - **Stop Execution**: Both documents must exist
-- **User Message**: "Missing requirements.md or design.md at `{{KIRO_DIR}}/specs/$1/`"
+- **User Message**: "Missing requirements.md or design.md at `.kiro/specs/$1/`"
 - **Suggested Action**: "Complete requirements and design phases first"
 
 **Incomplete Requirements Coverage**:
@@ -112,7 +112,7 @@ Provide brief summary in the language specified in spec.json:
 - **User Action Required**: Confirm intentional gaps or regenerate tasks
 
 **Template/Rules Missing**:
-- **User Message**: "Template or rules files missing in `{{KIRO_DIR}}/settings/`"
+- **User Message**: "Template or rules files missing in `.kiro/settings/`"
 - **Fallback**: Use inline basic structure with warning
 - **Suggested Action**: "Check repository setup or restore template files"
 - **Missing Numeric Requirement IDs**:

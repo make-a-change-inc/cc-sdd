@@ -1,15 +1,15 @@
 ---
 agent: 'agent'
-description: Manage {{KIRO_DIR}}/steering/ as persistent project knowledge
+description: Manage .kiro/steering/ as persistent project knowledge
 ---
 <meta>
-description: Manage {{KIRO_DIR}}/steering/ as persistent project knowledge
+description: Manage .kiro/steering/ as persistent project knowledge
 </meta>
 
 # Kiro Steering Management
 
 <background_information>
-**Role**: Maintain `{{KIRO_DIR}}/steering/` as persistent project memory.
+**Role**: Maintain `.kiro/steering/` as persistent project memory.
 
 **Mission**:
 - Bootstrap: Generate core steering from codebase (first-time)
@@ -19,13 +19,13 @@ description: Manage {{KIRO_DIR}}/steering/ as persistent project knowledge
 **Success Criteria**:
 - Steering captures patterns and principles, not exhaustive lists
 - Code drift detected and reported
-- All `{{KIRO_DIR}}/steering/*.md` treated equally (core + custom)
+- All `.kiro/steering/*.md` treated equally (core + custom)
 </background_information>
 
 <instructions>
 ## Scenario Detection
 
-Check `{{KIRO_DIR}}/steering/` status:
+Check `.kiro/steering/` status:
 
 **Bootstrap Mode**: Empty OR missing core files (product.md, tech.md, structure.md)  
 **Sync Mode**: All core files exist
@@ -34,7 +34,7 @@ Check `{{KIRO_DIR}}/steering/` status:
 
 ## Bootstrap Flow
 
-1. Load templates from `{{KIRO_DIR}}/settings/templates/steering/`
+1. Load templates from `.kiro/settings/templates/steering/`
 2. Analyze codebase (JIT):
    - `glob_file_search` for source files
    - `read_file` for README, package.json, etc.
@@ -44,7 +44,7 @@ Check `{{KIRO_DIR}}/steering/` status:
    - Tech: Frameworks, decisions, conventions
    - Structure: Organization, naming, imports
 4. Generate steering files (follow templates)
-5. Load principles from `{{KIRO_DIR}}/settings/rules/steering-principles.md`
+5. Load principles from `.kiro/settings/rules/steering-principles.md`
 6. Present summary for review
 
 **Focus**: Patterns that guide decisions, not catalogs of files/dependencies.
@@ -53,7 +53,7 @@ Check `{{KIRO_DIR}}/steering/` status:
 
 ## Sync Flow
 
-1. Load all existing steering (`{{KIRO_DIR}}/steering/*.md`)
+1. Load all existing steering (`.kiro/steering/*.md`)
 2. Analyze codebase for changes (JIT)
 3. Detect drift:
    - **Steering → Code**: Missing elements → Warning
@@ -68,7 +68,7 @@ Check `{{KIRO_DIR}}/steering/` status:
 
 ## Granularity Principle
 
-From `{{KIRO_DIR}}/settings/rules/steering-principles.md`:
+From `.kiro/settings/rules/steering-principles.md`:
 
 > "If new code follows existing patterns, steering shouldn't need updating."
 
@@ -137,11 +137,11 @@ Review and approve as Source of Truth.
 
 ## Notes
 
-- All `{{KIRO_DIR}}/steering/*.md` loaded as project memory
+- All `.kiro/steering/*.md` loaded as project memory
 - Templates and principles are external for customization
 - Focus on patterns, not catalogs
 - "Golden Rule": New code following patterns shouldn't require steering updates
 - Avoid documenting agent-specific tooling directories (e.g. `.cursor/`, `.gemini/`, `.claude/`)
-- `{{KIRO_DIR}}/settings/` content should NOT be documented in steering files (settings are metadata, not project knowledge)
-- Light references to `{{KIRO_DIR}}/specs/` and `{{KIRO_DIR}}/steering/` are acceptable; avoid other `.kiro/` directories
+- `.kiro/settings/` content should NOT be documented in steering files (settings are metadata, not project knowledge)
+- Light references to `.kiro/specs/` and `.kiro/steering/` are acceptable; avoid other `.kiro/` directories
 

@@ -25,16 +25,16 @@ Interactive design quality review for feature **$1** based on approved requireme
 ## Execution Steps
 
 1. **Load Context**:
-   - Read `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
-   - Read `{{KIRO_DIR}}/specs/$1/requirements.md` for requirements
-   - Read `{{KIRO_DIR}}/specs/$1/design.md` for design document
-   - **Load ALL steering context**: Read entire `{{KIRO_DIR}}/steering/` directory including:
+   - Read `.kiro/specs/$1/spec.json` for language and metadata
+   - Read `.kiro/specs/$1/requirements.md` for requirements
+   - Read `.kiro/specs/$1/design.md` for design document
+   - **Load ALL steering context**: Read entire `.kiro/steering/` directory including:
      - Default files: `structure.md`, `tech.md`, `product.md`
      - All custom steering files (regardless of mode settings)
      - This provides complete project memory and context
 
 2. **Read Review Guidelines**:
-   - Read `{{KIRO_DIR}}/settings/rules/design-review.md` for review criteria and process
+   - Read `.kiro/settings/rules/design-review.md` for review criteria and process
 
 3. **Execute Design Review**:
    - Follow design-review.md process: Analysis → Critical Issues → Strengths → GO/NO-GO
