@@ -1,7 +1,7 @@
 # cc-sdd: Spec-driven development for your team's workflow
 
-[![npm version](https://img.shields.io/npm/v/cc-sdd?logo=npm)](https://www.npmjs.com/package/cc-sdd?activeTab=readme)
-[![install size](https://packagephobia.com/badge?p=cc-sdd)](https://packagephobia.com/result?p=cc-sdd)
+[![npm version](https://img.shields.io/npm/v/%40mac-inc%2Fcc-sdd?logo=npm)](https://www.npmjs.com/package/%40mac-inc%2Fcc-sdd?activeTab=readme)
+[![install size](https://packagephobia.com/badge?p=%40mac-inc%2Fcc-sdd)](https://packagephobia.com/result?p=%40mac-inc%2Fcc-sdd)
 [![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](../../LICENSE)
 
 <div align="center" style="margin-bottom: 1rem; font-size: 1.1rem;"><sub>
@@ -21,7 +21,7 @@ English | <a href="./README_ja.md">日本語</a> | <a href="./README_zh-TW.md">�
 
 ---
 
-> Need the legacy flow? Use `npx cc-sdd@1.1.5`. Upgrading from v1.x?
+> Need the legacy flow? Use `npx @mac-inc/cc-sdd@1.1.5`. Upgrading from v1.x?
 > See the Migration Guide: [English](../../docs/guides/migration-guide.md) | [日本語](../../docs/guides/ja/migration-guide.md).
 
 ## 🚀 Installation
@@ -30,25 +30,25 @@ Run one command to install **AI-DLC** (AI Driven Development Lifecycle) with **S
 
 ```bash
 # Basic installation (defaults: English docs, Claude Code)
-npx cc-sdd@latest
+npx @mac-inc/cc-sdd@latest
 
 # With language options (default: --lang en)
-npx cc-sdd@latest --lang ja    # Japanese
-npx cc-sdd@latest --lang zh-TW # Traditional Chinese
-npx cc-sdd@latest --lang es    # Spanish
+npx @mac-inc/cc-sdd@latest --lang ja    # Japanese
+npx @mac-inc/cc-sdd@latest --lang zh-TW # Traditional Chinese
+npx @mac-inc/cc-sdd@latest --lang es    # Spanish
 ... (en, ja, zh-TW, zh, es, pt, de, fr, ru, it, ko, ar, el supported)
 
 # With agent options (default: claude-code / --claude)
-npx cc-sdd@latest --claude        # Claude Code (11 commands, en/ja/zh-TW/...)
-npx cc-sdd@latest --claude-agent --lang ja  # Claude Code Subagents (12 commands + 9 subagents)
-npx cc-sdd@latest --cursor --lang zh-TW     # Cursor IDE (choose any supported lang)
-npx cc-sdd@latest --gemini --lang es        # Gemini CLI
-npx cc-sdd@latest --codex --lang fr         # Codex CLI
-npx cc-sdd@latest --copilot --lang pt       # GitHub Copilot
-npx cc-sdd@latest --qwen --lang de          # Qwen Code
-npx cc-sdd@latest --opencode --lang en      # OpenCode (11 commands)
-npx cc-sdd@latest --opencode-agent --lang ja # OpenCode Subagents (12 commands + 9 subagents)
-npx cc-sdd@latest --windsurf --lang ja      # Windsurf IDE
+npx @mac-inc/cc-sdd@latest --claude        # Claude Code (11 commands, en/ja/zh-TW/...)
+npx @mac-inc/cc-sdd@latest --claude-agent --lang ja  # Claude Code Subagents (12 commands + 9 subagents)
+npx @mac-inc/cc-sdd@latest --cursor --lang zh-TW     # Cursor IDE (choose any supported lang)
+npx @mac-inc/cc-sdd@latest --gemini --lang es        # Gemini CLI
+npx @mac-inc/cc-sdd@latest --codex --lang fr         # Codex CLI
+npx @mac-inc/cc-sdd@latest --copilot --lang pt       # GitHub Copilot
+npx @mac-inc/cc-sdd@latest --qwen --lang de          # Qwen Code
+npx @mac-inc/cc-sdd@latest --opencode --lang en      # OpenCode (11 commands)
+npx @mac-inc/cc-sdd@latest --opencode-agent --lang ja # OpenCode Subagents (12 commands + 9 subagents)
+npx @mac-inc/cc-sdd@latest --windsurf --lang ja      # Windsurf IDE
 
 # Note: @next is now reserved for future alpha/beta versions
 ```
@@ -71,7 +71,7 @@ npx cc-sdd@latest --windsurf --lang ja      # Windsurf IDE
 | Arabic | `ar` | 🇸🇦 |
 | Greek | `el` | 🇬🇷 |
 
-**Usage**: `npx cc-sdd@latest --lang <code>` (e.g., `--lang ja` for Japanese)
+**Usage**: `npx @mac-inc/cc-sdd@latest --lang <code>` (e.g., `--lang ja` for Japanese)
 
 ## ✨ Quick Start
 
@@ -189,14 +189,14 @@ Edit templates in `{{KIRO_DIR}}/settings/templates/` to match your workflow. Kee
 
 ```bash
 # Language and platform
-npx cc-sdd@latest --lang ja            # macOS / Linux / Windows (auto-detected)
-npx cc-sdd@latest --lang ja --os mac   # Optional explicit override (legacy flag)
+npx @mac-inc/cc-sdd@latest --lang ja            # macOS / Linux / Windows (auto-detected)
+npx @mac-inc/cc-sdd@latest --lang ja --os mac   # Optional explicit override (legacy flag)
 
 # Safe operations  
-npx cc-sdd@latest --dry-run --backup
+npx @mac-inc/cc-sdd@latest --dry-run --backup
 
 # Custom directory
-npx cc-sdd@latest --kiro-dir docs
+npx @mac-inc/cc-sdd@latest --kiro-dir docs
 ```
 
 ## 📁 Project Structure

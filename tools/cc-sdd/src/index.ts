@@ -24,7 +24,7 @@ const aliasFlags = Array.from(new Set(agentKeys.flatMap((key) => getAgentDefinit
 
 const agentAliasLine = aliasFlags.length > 0 ? `  ${aliasFlags.join(' | ')}  Agent alias flags\n` : '';
 
-const helpText = `Usage: cc-sdd [options]
+const helpText = `Usage: cc-sdd-mac [options]
 
 Options:
   --agent <${agentKeys.join('|')}>  Select agent
@@ -120,7 +120,7 @@ const showVersion = (io: CliIO): void => {
   } catch {
     // ignore
   }
-  io.log(`cc-sdd v${version}`);
+  io.log(`cc-sdd-mac v${version}`);
 };
 
 const handleDryRun = async (

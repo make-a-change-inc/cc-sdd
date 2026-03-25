@@ -1,8 +1,8 @@
 # cc-sdd: Spec-driven development for your team's workflow
 
 <!-- npm badges -->
-[![npm version](https://img.shields.io/npm/v/cc-sdd?logo=npm)](https://www.npmjs.com/package/cc-sdd?activeTab=readme)
-[![install size](https://packagephobia.com/badge?p=cc-sdd)](https://packagephobia.com/result?p=cc-sdd)
+[![npm version](https://img.shields.io/npm/v/%40mac-inc%2Fcc-sdd?logo=npm)](https://www.npmjs.com/package/%40mac-inc%2Fcc-sdd?activeTab=readme)
+[![install size](https://packagephobia.com/badge?p=%40mac-inc%2Fcc-sdd)](https://packagephobia.com/result?p=%40mac-inc%2Fcc-sdd)
 [![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 
 <div align="center" style="font-size: 1.1rem; margin-bottom: 1rem;"><sub>
@@ -30,7 +30,7 @@ Stop losing 70% of development time to meetings, documentation ceremonies, and s
 ```bash
 # Run in your project root directory
 cd your-project
-npx cc-sdd@latest --claude --lang en ## Claude Code
+npx @mac-inc/cc-sdd@latest --claude --lang en ## Claude Code
 
 # ✅ That's it! Now run: /kiro:spec-init <what-to-build>
 ```
@@ -83,24 +83,24 @@ Common use cases: PRD-style requirements, API/database schemas, approval gates, 
 ### Choose Your Agent
 
 ```bash
-npx cc-sdd@latest --claude         # Claude Code (11 commands) [default]
-npx cc-sdd@latest --claude-agent   # Claude Code Subagents (12 commands + 9 subagents)
-npx cc-sdd@latest --cursor         # Cursor IDE
-npx cc-sdd@latest --gemini         # Gemini CLI
-npx cc-sdd@latest --codex          # Codex CLI
-npx cc-sdd@latest --copilot        # GitHub Copilot
-npx cc-sdd@latest --qwen           # Qwen Code
-npx cc-sdd@latest --opencode       # OpenCode (11 commands)
-npx cc-sdd@latest --opencode-agent # OpenCode Subagents (12 commands + 9 subagents)
-npx cc-sdd@latest --windsurf       # Windsurf IDE
+npx @mac-inc/cc-sdd@latest --claude         # Claude Code (11 commands) [default]
+npx @mac-inc/cc-sdd@latest --claude-agent   # Claude Code Subagents (12 commands + 9 subagents)
+npx @mac-inc/cc-sdd@latest --cursor         # Cursor IDE
+npx @mac-inc/cc-sdd@latest --gemini         # Gemini CLI
+npx @mac-inc/cc-sdd@latest --codex          # Codex CLI
+npx @mac-inc/cc-sdd@latest --copilot        # GitHub Copilot
+npx @mac-inc/cc-sdd@latest --qwen           # Qwen Code
+npx @mac-inc/cc-sdd@latest --opencode       # OpenCode (11 commands)
+npx @mac-inc/cc-sdd@latest --opencode-agent # OpenCode Subagents (12 commands + 9 subagents)
+npx @mac-inc/cc-sdd@latest --windsurf       # Windsurf IDE
 ```
 
 ### Choose Your Language
 
 ```bash
-npx cc-sdd@latest --lang ja        # Japanese
-npx cc-sdd@latest --lang zh-TW     # Traditional Chinese
-npx cc-sdd@latest --lang es        # Spanish
+npx @mac-inc/cc-sdd@latest --lang ja        # Japanese
+npx @mac-inc/cc-sdd@latest --lang zh-TW     # Traditional Chinese
+npx @mac-inc/cc-sdd@latest --lang es        # Spanish
 # Supports: en, ja, zh-TW, zh, es, pt, de, fr, ru, it, ko, ar, el
 ```
 
@@ -108,10 +108,10 @@ npx cc-sdd@latest --lang es        # Spanish
 
 ```bash
 # Preview changes before applying
-npx cc-sdd@latest --dry-run
+npx @mac-inc/cc-sdd@latest --dry-run
 
 # Custom specs directory
-npx cc-sdd@latest --kiro-dir docs
+npx @mac-inc/cc-sdd@latest --kiro-dir docs
 ```
 
 ---

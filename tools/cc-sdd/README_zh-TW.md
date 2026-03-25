@@ -19,7 +19,7 @@
 - ✅ **一次自訂** — 將模板適應至團隊流程；所有代理遵循相同工作流程
 - ✅ **統一工作流程** — 7 代理 × 13 語言共享相同的 11 指令流程
 
-> 只想看安裝？跳到 [安裝](#-安裝)。若要維持 1.1.5，使用 `npx cc-sdd@1.1.5 --claude-code ...`；升級 v2.0.0 請參考 [Migration Guide](../../docs/guides/migration-guide.md) ｜ [日文版](../../docs/guides/ja/migration-guide.md)。
+> 只想看安裝？跳到 [安裝](#-安裝)。若要維持 1.1.5，使用 `npx @mac-inc/cc-sdd@1.1.5 --claude-code ...`；升級 v2.0.0 請參考 [Migration Guide](../../docs/guides/migration-guide.md) ｜ [日文版](../../docs/guides/ja/migration-guide.md)。
 
 ## 🚀 安裝
 
@@ -27,25 +27,25 @@
 
 ```bash
 # 基本安裝（預設：英文文件，Claude Code 代理）
-npx cc-sdd@latest
+npx @mac-inc/cc-sdd@latest
 
 # 語言選項（預設：--lang en）
-npx cc-sdd@latest --lang zh-TW # 繁體中文
-npx cc-sdd@latest --lang ja    # 日語
-npx cc-sdd@latest --lang es    # 西班牙語
+npx @mac-inc/cc-sdd@latest --lang zh-TW # 繁體中文
+npx @mac-inc/cc-sdd@latest --lang ja    # 日語
+npx @mac-inc/cc-sdd@latest --lang es    # 西班牙語
 ...（支援語言：en, ja, zh-TW, zh, es, pt, de, fr, ru, it, ko, ar, el）
 
 # 代理選項（預設：claude-code / --claude）
-npx cc-sdd@latest --claude --lang zh-TW           # Claude Code（11 個指令，語言可任選）
-npx cc-sdd@latest --claude-agent --lang zh-TW     # Claude Code Subagents（12 個指令 + 9 個子代理）
-npx cc-sdd@latest --cursor --lang zh-TW           # Cursor IDE
-npx cc-sdd@latest --gemini --lang zh-TW           # Gemini CLI
-npx cc-sdd@latest --codex --lang zh-TW            # Codex CLI
-npx cc-sdd@latest --copilot --lang zh-TW          # GitHub Copilot
-npx cc-sdd@latest --qwen --lang zh-TW             # Qwen Code
-npx cc-sdd@latest --opencode --lang zh-TW         # OpenCode（11 個指令）
-npx cc-sdd@latest --opencode-agent --lang zh-TW   # OpenCode Subagents（12 個指令 + 9 個子代理）
-npx cc-sdd@latest --windsurf --lang zh-TW         # Windsurf IDE
+npx @mac-inc/cc-sdd@latest --claude --lang zh-TW           # Claude Code（11 個指令，語言可任選）
+npx @mac-inc/cc-sdd@latest --claude-agent --lang zh-TW     # Claude Code Subagents（12 個指令 + 9 個子代理）
+npx @mac-inc/cc-sdd@latest --cursor --lang zh-TW           # Cursor IDE
+npx @mac-inc/cc-sdd@latest --gemini --lang zh-TW           # Gemini CLI
+npx @mac-inc/cc-sdd@latest --codex --lang zh-TW            # Codex CLI
+npx @mac-inc/cc-sdd@latest --copilot --lang zh-TW          # GitHub Copilot
+npx @mac-inc/cc-sdd@latest --qwen --lang zh-TW             # Qwen Code
+npx @mac-inc/cc-sdd@latest --opencode --lang zh-TW         # OpenCode（11 個指令）
+npx @mac-inc/cc-sdd@latest --opencode-agent --lang zh-TW   # OpenCode Subagents（12 個指令 + 9 個子代理）
+npx @mac-inc/cc-sdd@latest --windsurf --lang zh-TW         # Windsurf IDE
 
 # 注意：@next 現已保留給未來的 alpha/beta 版本
 ```
@@ -68,7 +68,7 @@ npx cc-sdd@latest --windsurf --lang zh-TW         # Windsurf IDE
 | 阿拉伯語 | `ar` | 🇸🇦 |
 | 希臘語 | `el` | 🇬🇷 |
 
-**使用方法**: `npx cc-sdd@latest --lang <代碼>` (例如繁體中文使用 `--lang zh-TW`)
+**使用方法**: `npx @mac-inc/cc-sdd@latest --lang <代碼>` (例如繁體中文使用 `--lang zh-TW`)
 
 ## ✨ 快速開始
 
@@ -184,14 +184,14 @@ npx cc-sdd@latest --windsurf --lang zh-TW         # Windsurf IDE
 
 ```bash
 # 語言與平台
-npx cc-sdd@latest --lang zh-TW             # macOS / Linux / Windows（自動偵測）
-npx cc-sdd@latest --lang zh-TW --os mac    # 保留的可選覆寫
+npx @mac-inc/cc-sdd@latest --lang zh-TW             # macOS / Linux / Windows（自動偵測）
+npx @mac-inc/cc-sdd@latest --lang zh-TW --os mac    # 保留的可選覆寫
 
 # 安全操作
-npx cc-sdd@latest --dry-run --backup
+npx @mac-inc/cc-sdd@latest --dry-run --backup
 
 # 自訂目錄
-npx cc-sdd@latest --kiro-dir docs
+npx @mac-inc/cc-sdd@latest --kiro-dir docs
 ```
 
 ## 📁 專案結構
