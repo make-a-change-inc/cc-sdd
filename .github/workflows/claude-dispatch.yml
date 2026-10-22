@@ -7,7 +7,27 @@ on:
     types: [claude-dispatch]
 
 jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.permission.outputs.allowed }}
+    steps:
+      - name: Require current write permission before loading agent code or credentials
+        id: permission
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          permission=$(gh api "repos/$GITHUB_REPOSITORY/collaborators/$GITHUB_ACTOR/permission" --jq '.permission') || exit 1
+          case "$permission" in
+            admin|maintain|write) echo 'allowed=true' >> "$GITHUB_OUTPUT" ;;
+            *) echo 'allowed=false' >> "$GITHUB_OUTPUT" ;;
+          esac
   claude-dispatch:
+    needs: authorize
+    if: needs.authorize.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,9 +36,10 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 1
+          persist-credentials: false
 
       # - name: Preliminary Setup
         # run: |
@@ -28,7 +49,7 @@ jobs:
 
       - name: Run Claude Code
         id: claude
-        uses: anthropics/claude-code-action@eap
+        uses: anthropics/claude-code-action@9278e593553fcd1b65eede335d8c7e7e80da92db # eap
         with:
           mode: 'remote-agent'
           

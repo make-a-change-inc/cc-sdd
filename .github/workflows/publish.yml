@@ -1,43 +1,52 @@
 name: Publish Package
-
 on:
   push:
-    tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+    tags: ['v*.*.*']
   workflow_dispatch:
-
 permissions:
-  id-token: write  # Required for OIDC
   contents: read
-
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          node-version: '20'
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.23.4'
+      - name: Install without lifecycle hooks
+        working-directory: tools/cc-sdd
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build, test and pack
+        working-directory: tools/cc-sdd
+        run: |
+          npm run build --ignore-scripts
+          node scripts/add-shebang.mjs
+          npm test --ignore-scripts
+          npm pack --ignore-scripts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-package
+          path: tools/cc-sdd/*.tgz
+          if-no-files-found: error
+          retention-days: 1
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.23.4'
           registry-url: 'https://registry.npmjs.org'
-
-      # Ensure npm 11.5.1 or later is installed
-      - name: Update npm
-        run: npm install -g npm@latest
-      
-      - name: Install
-        working-directory: tools/cc-sdd
-        run: npm ci
-
-      - name: Build
-        working-directory: tools/cc-sdd
-        run: npm run build --if-present
-
-      - name: Test
-        working-directory: tools/cc-sdd
-        run: npm test --if-present
-
-      - name: Publish
-        working-directory: tools/cc-sdd
-        run: npm publish
+      - name: Select official npm CLI
+        run: npm install -g npm@11.19.1 --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: npm-package
+          path: package-artifact
+      - name: Publish verified tarball without project hooks
+        run: npm publish package-artifact/*.tgz --ignore-scripts

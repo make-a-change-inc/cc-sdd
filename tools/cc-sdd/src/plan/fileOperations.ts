@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { readFile, readdir } from 'node:fs/promises';
+import { readdir } from 'node:fs/promises';
+import { assertSafePath, safeReadFile } from '../utils/safeFiles.js';
 import type { ProcessedArtifact } from '../manifest/processor.js';
 import type { ResolvedConfig } from '../cli/config.js';
 import { contextFromResolved } from '../template/fromResolved.js';
@@ -39,6 +40,8 @@ const walkDir = async (dir: string): Promise<string[]> => {
       const full = path.join(entry.path, child.name);
       if (child.isDirectory()) {
         queue.push({ path: full, isDirectory: true });
+      } else if (child.isSymbolicLink()) {
+        throw new Error('Linked template entries are not supported');
       } else if (child.isFile()) {
         queue.push({ path: full, isDirectory: false });
       }
@@ -91,6 +94,8 @@ export const buildFileOperations = async (
     if (art.source.type === 'staticDir') {
       const srcDir = path.resolve(templatesRoot, art.source.from);
       const destDir = path.resolve(cwd, art.source.toDir);
+      await assertSafePath(templatesRoot, srcDir, 'directory');
+      await assertSafePath(cwd, destDir, 'directory');
       const files = await walkDir(srcDir);
       for (const src of files) {
         const rel = path.relative(srcDir, src);
@@ -104,7 +109,7 @@ export const buildFileOperations = async (
           relTarget,
           sourceMode: 'static',
           category,
-          render: async () => readFile(src),
+          render: async () => safeReadFile(templatesRoot, src),
         });
       }
       continue;
@@ -128,12 +133,12 @@ export const buildFileOperations = async (
         render: async () => {
           const loadTemplate = async (): Promise<string> => {
             try {
-              return await readFile(srcAbs, 'utf8');
+              return (await safeReadFile(templatesRoot, srcAbs)).toString('utf8');
             } catch (error) {
               const err = error as NodeJS.ErrnoException;
               if (err?.code === 'ENOENT' && fallbackRel) {
                 const fallbackAbs = path.resolve(templatesRoot, fallbackRel);
-                return readFile(fallbackAbs, 'utf8');
+                return (await safeReadFile(templatesRoot, fallbackAbs)).toString('utf8');
               }
               throw error;
             }
@@ -152,6 +157,8 @@ export const buildFileOperations = async (
     if (art.source.type === 'templateDir') {
       const srcDir = path.resolve(templatesRoot, art.source.fromDir);
       const destDir = path.resolve(cwd, art.source.toDir);
+      await assertSafePath(templatesRoot, srcDir, 'directory');
+      await assertSafePath(cwd, destDir, 'directory');
       const files = await walkDir(srcDir);
       for (const src of files) {
         const rel = path.relative(srcDir, src);
@@ -167,7 +174,7 @@ export const buildFileOperations = async (
           sourceMode: mode === 'json' ? 'template-json' : 'template-text',
           category,
           render: async () => {
-            const raw = await readFile(src, 'utf8');
+            const raw = (await safeReadFile(templatesRoot, src)).toString('utf8');
             if (mode === 'json') {
               const obj = renderJsonTemplate(raw, resolved.agent, ctx);
               return JSON.stringify(obj, null, 2) + '\n';
@@ -178,6 +185,11 @@ export const buildFileOperations = async (
       }
       continue;
     }
+  }
+
+  for (const op of operations) {
+    await assertSafePath(templatesRoot, op.srcAbs);
+    await assertSafePath(cwd, op.destAbs);
   }
 
   return operations.sort((a, b) => a.relTarget.localeCompare(b.relTarget));

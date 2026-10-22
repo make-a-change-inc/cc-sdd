@@ -88,3 +88,5 @@ docs/kiro/
 .gemini/
 # GEMINI.md
 # AGENTS.md
+# Local private material
+.secret/

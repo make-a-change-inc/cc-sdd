@@ -1,18 +1,17 @@
-import { appendFile, copyFile, writeFile } from 'node:fs/promises';
+import { assertSafePath, safeReadFile, safeWriteFile } from '../utils/safeFiles.js';
 import path from 'node:path';
 import type { ProcessedArtifact } from '../manifest/processor.js';
 import type { ResolvedConfig } from '../cli/config.js';
 import { buildFileOperations, type FileOperation, type SourceMode } from './fileOperations.js';
 import type { InstallCategory } from './categories.js';
-import { ensureDir, fileExists } from '../utils/fs.js';
+import { fileExists } from '../utils/fs.js';
 
 const backupIfNeeded = async (target: string, cwd: string, resolved: ResolvedConfig): Promise<void> => {
   if (!resolved.backupEnabled) return;
   if (!(await fileExists(target))) return;
   const rel = path.relative(cwd, target);
   const backupPath = path.resolve(cwd, resolved.backupDir, rel);
-  await ensureDir(path.dirname(backupPath));
-  await copyFile(target, backupPath);
+  await safeWriteFile(cwd, backupPath, await safeReadFile(cwd, target));
 };
 
 export type ConflictDecision = 'overwrite' | 'skip' | 'append';
@@ -41,12 +40,6 @@ const resolveCategoryPolicy = (
   return policies?.[category] ?? 'inherit';
 };
 
-const appendContent = async (target: string, payload: string): Promise<void> => {
-  const normalized = payload.endsWith('\n') ? payload : `${payload}\n`;
-  const separator = '\n\n';
-  await appendFile(target, (await fileExists(target)) ? `${separator}${normalized}` : normalized, 'utf8');
-};
-
 const canAppend = (mode: SourceMode): boolean => {
   return mode !== 'template-json';
 };
@@ -63,12 +56,7 @@ const handleWrite = async (
   resolved: ResolvedConfig,
 ): Promise<void> => {
   await backupIfNeeded(op.destAbs, cwd, resolved);
-  await ensureDir(path.dirname(op.destAbs));
-  if (typeof content === 'string') {
-    await writeFile(op.destAbs, content, 'utf8');
-  } else {
-    await writeFile(op.destAbs, content);
-  }
+  await safeWriteFile(cwd, op.destAbs, content);
 };
 
 const handleAppend = async (
@@ -82,13 +70,15 @@ const handleAppend = async (
     opts.log?.(`Append not supported for ${op.relTarget} (non-text content). Skipping.`);
     return false;
   }
-  await ensureDir(path.dirname(op.destAbs));
   if (!(await fileExists(op.destAbs))) {
     await handleWrite(op, content, cwd, resolved);
     return true;
   }
   const text = await ensureString(content);
-  await appendContent(op.destAbs, text);
+  const normalized = text.endsWith('\n') ? text : `${text}\n`;
+  const previous = await safeReadFile(cwd, op.destAbs);
+  await backupIfNeeded(op.destAbs, cwd, resolved);
+  await safeWriteFile(cwd, op.destAbs, Buffer.concat([previous, Buffer.from(`\n\n${normalized}`)]));
   return true;
 };
 
@@ -137,6 +127,18 @@ export const executeProcessedArtifacts = async (
 ): Promise<{ written: number; skipped: number }> => {
   const cwd = opts.cwd ?? process.cwd();
   const operations = opts.operations ?? (await buildFileOperations(items, resolved, opts));
+  const targets = new Set(operations.map(op => path.resolve(op.destAbs)));
+  // Validate the complete plan before rendering or mutating any file.
+  for (const op of operations) {
+    await assertSafePath(cwd, op.destAbs);
+    if (resolved.backupEnabled) {
+      if (path.resolve(cwd, resolved.backupDir) === path.resolve(cwd)) throw new Error('Backup directory must be a separate project subdirectory');
+      const backup = path.resolve(cwd, resolved.backupDir, path.relative(cwd, op.destAbs));
+      if (targets.has(backup)) throw new Error('Backup path overlaps an install target');
+      await assertSafePath(cwd, path.resolve(cwd, resolved.backupDir), 'directory');
+      await assertSafePath(cwd, path.resolve(cwd, resolved.backupDir, path.relative(cwd, op.destAbs)));
+    }
+  }
   let written = 0;
   let skipped = 0;
 
@@ -154,6 +156,7 @@ export const executeProcessedArtifacts = async (
       continue;
     }
 
+    await assertSafePath(cwd, op.destAbs);
     const rendered = await op.render();
 
     if (action === 'append') {

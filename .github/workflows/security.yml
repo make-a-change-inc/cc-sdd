@@ -1,0 +1,48 @@
+name: security
+on:
+  pull_request:
+  push:
+    branches: ['security/**']
+permissions:
+  contents: read
+jobs:
+  semgrep:
+    name: Semgrep CE
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check source patterns
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        shell: bash
+        run: |
+          args=(scan --config p/default --metrics=off --disable-version-check)
+          if [ "$EVENT_NAME" = pull_request ]; then
+            baseline=$(git merge-base "origin/$BASE_REF" HEAD)
+            args+=(--baseline-commit "$baseline" --error)
+          fi
+          docker run --rm -v "$PWD:/src" -w /src \
+            -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0='*' \
+            semgrep/semgrep@sha256:93963d9295a366f59e4850127b1550400ee7b388f04fe144e4a1f6325d96e01b \
+            semgrep "${args[@]}"
+  trivy:
+    name: Trivy (misconfig / secret)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Check configuration and secret patterns
+        run: |
+          docker run --rm -v "$PWD:/src:ro" -w /src \
+            aquasec/trivy@sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969 fs \
+            --scanners misconfig,secret --severity HIGH,CRITICAL --exit-code 1 \
+            --db-repository public.ecr.aws/aquasecurity/trivy-db,ghcr.io/aquasecurity/trivy-db \
+            --checks-bundle-repository public.ecr.aws/aquasecurity/trivy-checks,ghcr.io/aquasecurity/trivy-checks \
+            --no-progress .
