@@ -37,7 +37,7 @@ describe('CLI entry edge cases', () => {
     const ctx = makeIO();
     const code = await runCli(['--version', '-v'], runtime, ctx.io, {});
     expect(code).toBe(0);
-    expect(ctx.logs.join('\n')).toMatch(/cc-sdd v/);
+    expect(ctx.logs.join('\n')).toMatch(/cc-sdd-mac v/);
   });
 
   it('prioritizes help over version', async () => {
@@ -45,7 +45,7 @@ describe('CLI entry edge cases', () => {
     const code = await runCli(['--version', '--help'], runtime, ctx.io, {});
     expect(code).toBe(0);
     expect(ctx.logs.join('\n')).toMatch(/Usage: cc-sdd/);
-    expect(ctx.logs.join('\n')).not.toMatch(/cc-sdd v/);
+    expect(ctx.logs.join('\n')).not.toMatch(/cc-sdd-mac v/);
   });
 
   it('handles missing manifest file in dry-run mode', async () => {

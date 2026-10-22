@@ -17,5 +17,5 @@ try {
   console.log(`Ensured shebang and exec bit on ${cliPath}`);
 } catch (e) {
   console.error(`Failed to add shebang: ${e?.message || e}`);
-  process.exitCode = 0; // do not fail build hard
+  process.exitCode = 1;
 }

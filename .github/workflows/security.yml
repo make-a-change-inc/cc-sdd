@@ -1,0 +1,10 @@
+name: security
+on:
+  pull_request:
+  push:
+    branches: ['security/**']
+permissions:
+  contents: read
+jobs:
+  scan:
+    uses: make-a-change-inc/security-workflows/.github/workflows/scan.yml@3ed8d10b5cfcd24549f20fda514f11d8788b5cca

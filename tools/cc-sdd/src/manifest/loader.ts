@@ -14,8 +14,7 @@ export const loadManifest = async (filePath: string): Promise<Manifest> => {
   try {
     json = JSON.parse(raw);
   } catch (e: any) {
-    const msg = e?.message ?? String(e);
-    throw new Error(`Invalid JSON in manifest: ${msg}`);
+    throw new Error('Invalid JSON in manifest');
   }
 
   if (!json || typeof json !== 'object') throw new Error('Manifest must be an object');
